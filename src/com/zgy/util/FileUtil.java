@@ -2,8 +2,12 @@ package com.zgy.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -74,19 +78,43 @@ public class FileUtil {
 		return FileUtil.size;
 	}
 
-	public static String sizeLongToString(long size) {
-		if (size == 0) {
-			return "0KB";
+	/**
+	 * 转换文件的大小，将文件的字节数转换为kb、mb、或gb
+	 * 
+	 * @Description:
+	 * @param size单位byte
+	 * @return保留1位小数
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-1-11
+	 */
+	public static String sizeLongToStringOne(long size) {
+		String a = "";
+		if (size < 1024) {
+			a = String.format("%d byte(s)", size);
+		} else if (size / 1024 < 1024.0) {
+			a = String.format("%.1f KB", size / 1024.0);
+		} else if (size / 1048576 < 1024) {
+			a = String.format("%.1f MB", size / 1048576.0);
 		} else {
-			String a = "";
-			if (size / 1024 < 1024.0) {
-				a = String.format("%.2f", size / 1024.0) + "KB";
-			} else if (size / 1048576 < 1024) {
-				a = String.format("%.2f", size / 1048576.0) + "MB";
-			} else {
-				a = String.format("%.2f", size / 1073740824.0) + "GB";
-			}
-			return a;
+			a = String.format("%.1f GB", size / 1073740824.0);
+		}
+		return a;
+	}
+
+	public static String sizeLongToStringTwo(long size) {
+		long kb = 1024;
+		long mb = (kb * 1024);
+		long gb = (mb * 1024);
+		if (size < kb) {
+			return String.format("%d bytes", (int) size);
+		} else if (size < mb) {
+			return String.format("%.1f KB", size / kb);
+		} else if (size < gb) {
+			return String.format("%.1f MB", size / mb);
+		} else {
+			return String.format("%.1f GB", size / gb);
 		}
 	}
 
@@ -212,6 +240,66 @@ public class FileUtil {
 		fis.close();
 
 		return true;
+	}
+
+	/**
+	 * 从文件读取数组
+	 * 
+	 * @Description:
+	 * @param file
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2012-10-10
+	 */
+	public static ArrayList<String> readArray(File file) {
+		ArrayList<String> result = new ArrayList<String>();
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+			result = (ArrayList<String>) in.readObject();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * 把数组写入文件
+	 * 
+	 * @Description:
+	 * @param email
+	 * @param file
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2012-10-10
+	 */
+	public static void writeString2Array(String email, File file) {
+		// 绑定账号时，先读取已经存储的绑定成功过的账号，若不存在当前绑定的账号，则添加到其中。
+		ArrayList<String> a = new ArrayList<String>();
+		if (file.exists()) {
+			a = readArray(file);
+		}
+		if (a != null && !(a.contains(email))) {
+			a.add(email);
+			try {
+				if (file.exists()) {
+					file.delete();
+					file.createNewFile();
+				}
+				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+				out.writeObject(a);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

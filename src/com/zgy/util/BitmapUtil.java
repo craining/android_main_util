@@ -1,7 +1,9 @@
 package com.zgy.util;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import android.content.Context;
@@ -309,6 +311,64 @@ public class BitmapUtil {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+	}
+
+	/********* 压缩图片 *******/
+
+	/**
+	 * 图片压缩工具类
+	 * 
+	 * @param bitmap
+	 * @param Width
+	 *            新图像尺寸
+	 * @param Height
+	 * @return
+	 */
+	public static Bitmap smallImage(Bitmap bitmap, int Width, int Height) {
+		int oldWidth = bitmap.getWidth();
+		int oldHeight = bitmap.getHeight();
+
+		float scaleWidth = ((float) Width) / oldWidth;
+		float scaleHeight = ((float) Height) / oldHeight;
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+
+		return Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, matrix, true);
+
+	}
+
+	/*
+	 * @param oldPath 原本图片的路径
+	 * 
+	 * @param newPath 压缩后图片的路径
+	 * 
+	 * @param size 压缩比例
+	 */
+	public static File smallPic(String oldPath, String newPath, int size) {
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		Bitmap resizeBmp;
+		opts.inSampleSize = size;
+		opts.inJustDecodeBounds = false;
+		resizeBmp = BitmapFactory.decodeFile(oldPath, opts);
+		File pictureFile = new File(newPath);
+		try {
+			if (pictureFile.exists()) {
+				pictureFile.delete();
+			}
+			pictureFile.createNewFile();
+			FileOutputStream fOut = new FileOutputStream(pictureFile);
+			resizeBmp.compress(Bitmap.CompressFormat.JPEG, 50, fOut);
+			fOut.flush();
+			fOut.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		if (resizeBmp.isRecycled() == false) {
+			resizeBmp.recycle();
+			System.gc();
+		}
+		return pictureFile;
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.zgy.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringUtil {
 
 	/**
@@ -95,5 +98,49 @@ public class StringUtil {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * 去掉字符串中的换行；用于邮件列表中预览的显示
+	 * 
+	 * @Description:
+	 * @param str
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2012-9-25 注： \n 回车 \t 水平制表符 \s 空格 \r 换行
+	 */
+	public static String deleteEmptyLine(String str) {
+		String dest = str;
+		if (str != null) {
+			Pattern p = Pattern.compile("\r|\n");
+			Matcher m = p.matcher(str);
+			dest = m.replaceAll("");
+		}
+		return dest;
+	}
+
+	/**
+	 * tab 换为一个空格，多个空格合并；用于邮件列表中预览的显示
+	 * 
+	 * @Description:
+	 * @param str
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2012-9-25
+	 */
+	public static String combineBlank(String str) {
+		String dest = str;
+		if (str != null) {
+			Pattern p = Pattern.compile("\t");
+			Matcher m = p.matcher(str);
+			dest = (m.replaceAll(" ")).trim().replaceAll(" +", " ");
+		} else {
+			dest = "";
+		}
+		return dest;
 	}
 }
