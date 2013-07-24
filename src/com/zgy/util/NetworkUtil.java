@@ -1,11 +1,17 @@
 package com.zgy.util;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 public class NetworkUtil {
 
@@ -82,4 +88,51 @@ public class NetworkUtil {
 	}
 	
 	
+	
+	/**
+	 * 获得ip地址
+	 * 
+	 * @Description:
+	 * @param context
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-4-10
+	 */
+	public static String getIp(Context context) {
+		String ip = "10.0.0.2";
+		if (isNetworkAvailable(context)) {
+			if (isWifiEnabled(context)) {
+				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+				int ipAddress = wifiInfo.getIpAddress();
+				ip = (ipAddress & 0xFF) + "." + ((ipAddress >> 8) & 0xFF) + "." + ((ipAddress >> 16) & 0xFF) + "." + (ipAddress >> 24 & 0xFF);
+			} else if (isMobileEnabled(context)) {
+				ip = getLocalIpAddress();
+			}
+		}
+		Debug.v("getIp", "IP=" + ip);
+		return ip;
+	}
+
+	private static String getLocalIpAddress() {
+		try {
+
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress()) {
+						return inetAddress.getHostAddress().toString();
+					}
+				}
+			}
+		} catch (SocketException ex) {
+			Debug.e("WifiPreference IpAddress", ex.toString());
+		}
+
+		return null;
+
+	}
 }

@@ -36,7 +36,7 @@ public class StringUtil {
 		if (result != null) {
 			result = result.replaceAll("-", "");
 			result = result.replaceAll(" ", "");
-			result = result.replaceAll("\\+86", "");
+			result = result.replaceAll("\\+86", "");//仅去掉大陆区号
 			if (result.startsWith("12520")) {
 				// 若是飞信短信
 				result = result.replace("12520", "");
@@ -46,6 +46,32 @@ public class StringUtil {
 		return result;
 	}
 
+	/**
+	 * 现在号码段分配如下：
+	 * 
+	 * 移动： 139 138 137 136 135 134 147 150 151 152 157 158 159 182 183 187 188
+	 * 
+	 * 联通： 130 131 132 155 156 185 186 145
+	 * 
+	 * 电信： 133 153 180 181 189
+	 * 
+	 * 参考：http://www.jihaoba.com/tools/?com=haoduan
+	 * 
+	 * @Description:
+	 * @param number
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-4-16
+	 */
+	public static boolean isPhoneNumberFormat(String number) {
+
+		Pattern p = Pattern.compile("^((13[0-9])|(14[5,7])|(15[^4,\\D])|(18[^4,\\D]))\\d{8}$");
+		Matcher m = p.matcher(number);
+		return m.matches();
+	}
+	
 	/**
 	 * 是否为空
 	 * 

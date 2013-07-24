@@ -139,4 +139,52 @@ public class PhoneUtil {
 		}
 	}
 
+	
+	/**
+	 * 获得手机的IMEI
+	 * 
+	 * @Description:
+	 * @param con
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-3-6
+	 */
+	public static String getPhoneImei(Context con) {
+		TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
+		return tm.getDeviceId();
+	}
+
+	/**
+	 * 获得手机号
+	 * 
+	 * @Description:
+	 * @param con
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-3-6
+	 */
+	public static String getPhoneSimNumber(Context con) {
+		TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
+		return tm.getLine1Number();
+	}
+
+	/**
+	 * 获得手机的IMEI
+	 * 
+	 * @Description:
+	 * @param con
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-3-6
+	 */
+	public static String getPhoneImsi(Context con) {
+		TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
+		return tm.getSubscriberId();
+	}
 }

@@ -7,11 +7,8 @@ import java.util.Date;
 
 public class TimeUtil {
 
-	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd_HH-mm-ss";// 由于文件名不能包含冒号，所以时间用-隔开
+	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static String TIME_DATE_STRING_FORMAT = "yyyy-MM-dd";//
-
-	public static final int TIME_NOW_NIGHT = 1;// 晚上
-	public static final int TIME_NOW_MOON = 2;// 中午
 
 	public static long getCurrentTimeMillis() {
 		return (System.currentTimeMillis() / 1000) * 1000;
@@ -54,31 +51,6 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 在12:00--13:59
-	 * 
-	 * 以及19:00之后
-	 * 
-	 * @Description:
-	 * @return
-	 * @see:
-	 * @since:
-	 * @author: zhuanggy
-	 * @date:2012-11-22
-	 */
-	public static int inTime() {
-		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-		Debug.e("Globle", "hour" + hour);
-		if (hour >= 18) {
-			return TIME_NOW_NIGHT;
-		} else if (hour == 12 || hour == 13) {
-			return TIME_NOW_MOON;
-		} else {
-			return -1;
-		}
-
-	}
-
-	/**
 	 * 将时间转为特定的格式 如: 1 转为 01
 	 * 
 	 * @param mmm
@@ -94,5 +66,46 @@ public class TimeUtil {
 		} else {
 			return "" + mmm;
 		}
+	}
+	
+	/**
+	 * 当前日期加n天后的日期，返回String (yyyy-mm-dd) 
+	 * @Description:
+	 * @param n
+	 * @return
+	 * @see: 
+	 * @since: 
+	 * @author: xuqq
+	 * @date:2013-7-2
+	 */
+	public static String nDaysAfterNowDate(int n) { 
+		Calendar rightNow = Calendar.getInstance(); 
+		rightNow.add(Calendar.DAY_OF_MONTH,+n);
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
+		return sdf.format(rightNow.getTime()); 
+	}
+	
+	/**
+	 * 输入日期取星期几
+	 * @Description:
+	 * @param DateStr
+	 * @return
+	 * @see: 
+	 * @since: 
+	 * @author: xuqq
+	 * @date:2013-7-4
+	 */
+	public static String getWeekDay(String DateStr){
+	      SimpleDateFormat formatYMD=new SimpleDateFormat("yyyy-MM-dd");//formatYMD表示的是yyyy-MM-dd格式
+	      SimpleDateFormat formatD=new SimpleDateFormat("E");//"E"表示"day in week"
+	      Date d=null;
+	      String weekDay="";
+	      try{
+	         d=formatYMD.parse(DateStr);//将String 转换为符合格式的日期
+	         weekDay=formatD.format(d);
+	      }catch (Exception e){
+	         e.printStackTrace();
+	      }
+	     return weekDay;
 	}
 }
