@@ -21,6 +21,17 @@ public class FileUtil {
 		FileUtil.size = 0;
 	}
 
+	/**
+	 * 删除非目录的文件
+	 * 
+	 * @Description:
+	 * @param file
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-24
+	 */
 	public static boolean delFile(File file) {
 		if (file.isDirectory()) {
 			return false;
@@ -29,37 +40,63 @@ public class FileUtil {
 		return file.delete();
 	}
 
+	/**
+	 * 递归删除某目录及其所有子文件和子目录
+	 * 
+	 * @Description:
+	 * @param dir
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-24
+	 */
 	public static boolean delFileDir(File dir) {
-		if (dir == null || !dir.exists() || dir.isFile()) {
+		if (dir == null || !dir.exists()) {
 			return false;
 		}
-		File[] listFiles = dir.listFiles();
-		if (listFiles != null) {
-			for (File file : listFiles) {
-				if (file.isFile()) {
-					file.delete();
-				} else if (file.isDirectory()) {
-					delFileDir(file);
+		if (dir.isFile()) {
+			dir.delete();
+		} else {
+			File[] listFiles = dir.listFiles();
+			if (listFiles == null || listFiles.length == 0) {
+				dir.delete();
+			} else {
+				for (File file : listFiles) {
+					if (file.isFile()) {
+						file.delete();
+					} else if (file.isDirectory()) {
+						delFileDir(file);
+					}
 				}
 			}
 		}
-		// dir.delete();
+
 		return true;
 	}
 
+	/**
+	 * 递归获得文件目录大小
+	 * 
+	 * @Description:
+	 * @param dir
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-24
+	 */
 	public long getFileSize(File dir) {
 
 		try {
 			if (!dir.isDirectory()) {
 				setSize(getSize() + dir.length());
-				// Debug.e("", dir.toString());
 			} else {
 				for (File file : dir.listFiles()) {
 					if (!file.isDirectory()) {
-						// Debug.e("", file.toString());
 						setSize(getSize() + file.length());
 					} else {
-						getFileSize(file);// 閫掑綊
+						getFileSize(file);
 					}
 				}
 			}
@@ -83,7 +120,7 @@ public class FileUtil {
 	 * 
 	 * @Description:
 	 * @param size单位byte
-	 * @return保留1位小数
+	 * @return 保留1位小数
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
@@ -108,13 +145,29 @@ public class FileUtil {
 		long mb = (kb * 1024);
 		long gb = (mb * 1024);
 		if (size < kb) {
-			return String.format("%d bytes", (int) size);
+			return String.format("%d byte(s)", (int) size);
 		} else if (size < mb) {
 			return String.format("%.1f KB", size / kb);
 		} else if (size < gb) {
 			return String.format("%.1f MB", size / mb);
 		} else {
 			return String.format("%.1f GB", size / gb);
+		}
+	}
+
+	public static String sizeLongToStringThree(long size) {
+		if (size == 0) {
+			return "0 KB";
+		} else {
+			String a = "";
+			if (size / 1024 < 1024.0) {
+				a = String.format("%.2f", size / 1024.0) + "KB";
+			} else if (size / 1048576 < 1024) {
+				a = String.format("%.2f", size / 1048576.0) + "MB";
+			} else {
+				a = String.format("%.2f", size / 1073740824.0) + "GB";
+			}
+			return a;
 		}
 	}
 
