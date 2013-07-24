@@ -22,7 +22,6 @@ import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Intents;
 
-import com.zgy.mainutil.R;
 import com.zgy.util.beans.ContactBean;
 
 public class ContactsUtil {
@@ -261,7 +260,7 @@ public class ContactsUtil {
 		contacts = ContactsUtil.getAllContactsFromSim(con);
 		if (contacts != null && contacts.size() > 0) {
 			isNull = false;
-			String contactsStr = "\r\n\r\n\r\nSIM卡通信录：\r\n\r\n";
+			String contactsStr = "\r\n\r\n\r\nSIM卡通讯录：\r\n\r\n";
 			for (ContactBean c : contacts) {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
@@ -276,7 +275,7 @@ public class ContactsUtil {
 
 	}
 
-	/******************************************* 与联系人中的email地址相关的一些操作  ******************************************************/
+	/******************************************* 与联系人中的email地址相关的一些操作 ******************************************************/
 
 	/**
 	 * 通过邮件地址获取 联系人姓名·
@@ -433,7 +432,7 @@ public class ContactsUtil {
 				activity.startActivity(intent);
 			}
 		} catch (Exception e) {
-			Debug.e("failfast", "failfast_AA", e);
+			e.printStackTrace();
 		}
 	}
 

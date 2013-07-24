@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 
 public class NetworkUtil {
 
@@ -86,9 +87,7 @@ public class NetworkUtil {
 		Method method = ownerClass.getMethod(methodName, argsClass);
 		return method.invoke(mConnectivityManager, value);
 	}
-	
-	
-	
+
 	/**
 	 * 获得ip地址
 	 * 
@@ -134,5 +133,30 @@ public class NetworkUtil {
 
 		return null;
 
+	}
+
+	private static WifiLock wifilock = null;// 暂不知道何情况下使用
+
+	/**
+	 * 使用Wifi连接, wifi锁
+	 */
+	public static void startUseWifi(Context c) {
+		WifiManager wifimanager = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
+		if (wifimanager != null) {
+			wifilock = wifimanager.createWifiLock(WifiManager.WIFI_MODE_FULL, "meq");
+			if (wifilock != null) {
+				wifilock.acquire();
+			}
+		}
+	}
+
+	/**
+	 * 释放wifi锁
+	 */
+	public static void stopUseWifi() {
+		if (wifilock != null && wifilock.isHeld()) {
+			wifilock.release();
+		}
+		wifilock = null;
 	}
 }
