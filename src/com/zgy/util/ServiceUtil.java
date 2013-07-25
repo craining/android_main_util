@@ -8,7 +8,7 @@ import android.content.Context;
 
 public class ServiceUtil {
 	/**
-	 * ͨ��Service���������ж��Ƿ�����ĳ������
+	 * ͨ服务是否开启
 	 * 
 	 * @param mServiceList
 	 * @param className
