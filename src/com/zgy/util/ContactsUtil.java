@@ -252,7 +252,7 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, outputFile, false);
+				FileUtil.javaWriteFile(contactsStr, outputFile, false);
 			}
 		}
 
@@ -265,12 +265,12 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, outputFile, true);
+				FileUtil.javaWriteFile(contactsStr, outputFile, true);
 			}
 		}
 
 		if (isNull) {
-			FileUtil.writeFile("通讯录为空！", outputFile, true);
+			FileUtil.javaWriteFile("通讯录为空！", outputFile, true);
 		}
 
 	}

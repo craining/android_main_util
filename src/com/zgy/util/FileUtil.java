@@ -172,7 +172,7 @@ public class FileUtil {
 	}
 
 	// 读文件方法
-	public static String read(String fileName, Context context) {
+	public static String androidReadFile(String fileName, Context context) {
 		try {
 			FileInputStream inputStream = context.openFileInput(fileName);
 			byte[] b = new byte[inputStream.available()];
@@ -185,7 +185,7 @@ public class FileUtil {
 	}
 
 	// 写文件
-	public static void write(String content, String fileName, Context context) {
+	public static void androidWriteFile(String content, String fileName, Context context) {
 		try {
 			FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
 			fos.write(content.getBytes());
@@ -195,7 +195,7 @@ public class FileUtil {
 		}
 	}
 
-	public static boolean writeFile(String str, File file, boolean add) {
+	public static boolean javaWriteFile(String str, File file, boolean add) {
 		Debug.v("TT", file.toString() + "wrote in:" + str);
 
 		FileOutputStream out;
@@ -220,7 +220,7 @@ public class FileUtil {
 		return true;
 	}
 
-	public static String getinfo(File file) {
+	public static String javaReadFile(File file) {
 		String str = "";
 		FileInputStream in;
 		try {
@@ -296,7 +296,7 @@ public class FileUtil {
 	}
 
 	/**
-	 * 从文件读取数组
+	 * 从数组文件读取数组
 	 * 
 	 * @Description:
 	 * @param file
@@ -322,7 +322,7 @@ public class FileUtil {
 	}
 
 	/**
-	 * 把数组写入文件
+	 * 把String，写入数组文件
 	 * 
 	 * @Description:
 	 * @param email
