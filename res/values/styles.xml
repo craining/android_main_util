@@ -2,4 +2,11 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <!-- menu样式 -->
+    <style name="menu_popupwindow_style">
+        <item name="android:windowEnterAnimation">@anim/menu_down</item>
+        <item name="android:windowExitAnimation">@anim/menu_up</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>
