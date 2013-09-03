@@ -13,13 +13,13 @@ import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 
 /**
+ * 获得某个apk文件的程序图片
  * 
- * @Description:显示没有安装的35apk图标
- * @author:gongfacun
+ * @Description:
  * @see:
  * @since:
  * @copyright © 35.com
- * @Date:2012-11-2
+ * @Date:2013-8-29
  */
 public class ApkUtil {
 
