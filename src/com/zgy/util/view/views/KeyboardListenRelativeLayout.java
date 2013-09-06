@@ -1,19 +1,19 @@
 package com.zgy.util.view.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 /**
- * 监听软键盘弹起
+ * 登录页布局
  * 
  * @Description:
+ * @author:zhangran
  * @see:
  * @since:
- * @Date:2013-8-28
+ * @copyright © 35.com
+ * @Date:2013-6-21
  */
-@SuppressLint("WrongCall")
 public class KeyboardListenRelativeLayout extends RelativeLayout {
 
 	public static final byte KEYBOARD_STATE_SHOW = -3;
