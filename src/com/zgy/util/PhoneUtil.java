@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
 
 public class PhoneUtil {
 
 	private static final String TAG = "PhoneUtil";
-	
+
 	/**
 	 * 获得手机信息
 	 * 
@@ -139,7 +139,6 @@ public class PhoneUtil {
 		}
 	}
 
-	
 	/**
 	 * 获得手机的IMEI
 	 * 
@@ -186,5 +185,92 @@ public class PhoneUtil {
 	public static String getPhoneImsi(Context con) {
 		TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
 		return tm.getSubscriberId();
+	}
+
+	/**
+	 * 读取网络制式
+	 * 
+	 * @Description:
+	 * @param con
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-9-25
+	 */
+	public String getnetworkname(Context con) {
+		TelephonyManager tm1 = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
+		String strlin = "";
+		int intsjzs;
+		int type = tm1.getNetworkType();
+		String operator = tm1.getNetworkOperator();
+
+		Log.e("", "tm1.getNetworkOperator()" + tm1.getNetworkOperator());
+		Log.e("", "tm1.getSimState()" + tm1.getSimState());
+		Log.e("", "tm1.getSubscriberId()" + tm1.getSubscriberId());
+		Log.e("", "tm1.isNetworkRoaming()" + tm1.isNetworkRoaming());
+
+		if (operator != null && operator.length() >= 3) {
+			int mnc = 0;
+			try {
+				mnc = Integer.parseInt(operator.substring(3)); // 得到网络运行商的标志0,1,2分别代表移动，联通，电信
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			if (type == TelephonyManager.NETWORK_TYPE_EVDO_0 || type == TelephonyManager.NETWORK_TYPE_EVDO_A) {
+				intsjzs = 0; // 电信3G(CDMA2000)
+			} else if (type == TelephonyManager.NETWORK_TYPE_CDMA || type == TelephonyManager.NETWORK_TYPE_1xRTT) {
+				intsjzs = 1; // 电信CDMA
+			} else if (type == TelephonyManager.NETWORK_TYPE_EDGE) {
+				if (mnc == 0) {
+					intsjzs = 2;
+				} // 网络运营商为移动 移动GSM
+				else {
+					intsjzs = 4;
+				} // 否则为联通GSM
+			} else if (type == TelephonyManager.NETWORK_TYPE_GPRS) {
+				if (mnc == 0) {
+					intsjzs = 2;
+				} // 网络运营商为移动 移动GSM
+				else {
+					intsjzs = 4;
+				} // 否则为联通GSM
+			} else if (type == TelephonyManager.NETWORK_TYPE_UMTS || type == TelephonyManager.NETWORK_TYPE_HSDPA) {
+				intsjzs = 5; // 联通WCDMA3G
+			} else {
+				intsjzs = 3; // 移动TD3G
+			}
+			if ((mnc == 0) && (intsjzs == 5 || intsjzs == 0 || intsjzs == 1))
+				intsjzs = 3; // 为保证运营商制式相对应，重新做一调整
+
+			switch (intsjzs) {
+			case 0:
+				strlin = "中国电信CDMA制式手机";
+				break;
+			case 1:
+				strlin = "中国电信CDMA2000制式手机";
+				break;
+			case 2:
+				strlin = "中国移动GSM制式手机";
+				break;
+			case 3:
+				strlin = "中国移动TD制式手机";
+				break;
+			case 4:
+				strlin = "中国联通GSM制式手机";
+				break;
+			case 5:
+				strlin = "中国联通WCDMA制式手机";
+				break;
+
+			default:
+				break;
+			}
+
+		} else {
+			strlin = "无法确定";
+		}
+
+		return strlin;
 	}
 }
