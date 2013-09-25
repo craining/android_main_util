@@ -295,6 +295,60 @@ public class FileUtil {
 		return true;
 	}
 
+	
+	/**
+	 * 复制文件
+	 * 
+	 * @Description:
+	 * @param sourceFile
+	 * @param targetFile
+	 * @param replease
+	 *            重名是否替换
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-9-25
+	 */
+	public static boolean copyOneFile(String sourceFile, String targetFile, boolean repleaseIfexists) {
+
+		FileInputStream input = null;
+		FileOutputStream output = null;
+
+		File file = new File(targetFile);
+		boolean existReplease = false;
+		
+		if (file.exists()) {
+			if (repleaseIfexists) {
+				existReplease = true;
+				file = new File(targetFile + ".temp");
+			} else {
+				return false;
+			}
+		}
+		try {
+			input = new FileInputStream(sourceFile);
+			output = new FileOutputStream(file);
+			byte[] b = new byte[1024 * 5];
+			int len;
+			while ((len = input.read(b)) != -1) {
+				output.write(b, 0, len);
+			}
+			output.flush();
+			output.close();
+			input.close();
+			//同名替换
+			if(existReplease) {
+				new File(targetFile).delete();
+				file.renameTo(new File(targetFile));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * 从数组文件读取数组
 	 * 
