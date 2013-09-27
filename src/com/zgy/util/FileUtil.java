@@ -155,22 +155,6 @@ public class FileUtil {
 		}
 	}
 
-	public static String sizeLongToStringThree(long size) {
-		if (size == 0) {
-			return "0 KB";
-		} else {
-			String a = "";
-			if (size / 1024 < 1024.0) {
-				a = String.format("%.2f", size / 1024.0) + "KB";
-			} else if (size / 1048576 < 1024) {
-				a = String.format("%.2f", size / 1048576.0) + "MB";
-			} else {
-				a = String.format("%.2f", size / 1073740824.0) + "GB";
-			}
-			return a;
-		}
-	}
-
 	// 读文件方法
 	public static String androidReadFile(String fileName, Context context) {
 		try {
