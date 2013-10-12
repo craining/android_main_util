@@ -70,4 +70,35 @@ public class MD5Util {
         stringbuffer.append(c0);  
         stringbuffer.append(c1);  
     }  
+    
+    
+    
+    /**
+	 * 对安全码进行MD5加密
+	 * 
+	 * @param plainText
+	 * @return MD5加密后的串
+	 */
+	public static String Md5(String plainText) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(plainText.getBytes());
+			byte b[] = md.digest();
+			int i;
+			StringBuffer buf = new StringBuffer("");
+			for (int offset = 0; offset < b.length; offset++) {
+				i = b[offset];
+				if (i < 0)
+					i += 256;
+				if (i < 16)
+					buf.append("0");
+				buf.append(Integer.toHexString(i));
+			}
+			return buf.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			Debug.e("failfast", "failfast_AA", e);
+		}
+		return null;
+	}
 }  
