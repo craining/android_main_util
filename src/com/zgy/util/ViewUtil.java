@@ -1,9 +1,11 @@
 package com.zgy.util;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.RotateAnimation;
+import android.view.animation.Transformation;
 
 public class ViewUtil {
 
@@ -57,5 +59,26 @@ public class ViewUtil {
 		}
 		anim.setDuration(ainmTime);
 		v.startAnimation(anim);
+	}
+	
+	/**
+	 * 图标的旋转飞入飞出动画
+	 * @param 
+	 * @author zhuanggy
+	 * @date 2013-12-5
+	 */
+	public static void startAnimationsRotate(ViewGroup viewgroup, int durationMillis, boolean in, AnimationListener listener) {
+		Animation animation = null;
+		if(in) {
+			animation = new RotateAnimation(-180, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1.0f);
+		} else {
+			animation = new RotateAnimation(0, -180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1.0f);
+		}
+		animation.setFillAfter(true);
+		animation.setDuration(durationMillis);
+		if(listener != null) {
+			animation.setAnimationListener(listener);
+		}
+		viewgroup.startAnimation(animation);
 	}
 }
