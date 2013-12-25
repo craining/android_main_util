@@ -20,18 +20,31 @@ public final class R {
     public static final class drawable {
         public static final int bg_menu_item_n=0x7f020000;
         public static final int bg_menu_item_p=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int selector_bg_menu_item=0x7f020003;
+        public static final int file=0x7f020002;
+        public static final int folder_empty=0x7f020003;
+        public static final int folder_full=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int selector_bg_menu_item=0x7f020006;
     }
     public static final class id {
+        public static final int btn_back=0x7f080002;
+        public static final int btn_finish=0x7f080004;
+        public static final int btn_return=0x7f080003;
         public static final int fc_menu_gridview_1=0x7f080000;
         public static final int fc_menu_gridview_2=0x7f080001;
-        public static final int layout_menu_icon=0x7f080002;
-        public static final int layout_menu_txt=0x7f080003;
+        public static final int file_icon=0x7f080008;
+        public static final int file_list=0x7f080007;
+        public static final int file_text=0x7f080009;
+        public static final int layout_menu_icon=0x7f08000a;
+        public static final int layout_menu_txt=0x7f08000b;
+        public static final int text_nowpath=0x7f080005;
+        public static final int textview_top=0x7f080006;
     }
     public static final class layout {
         public static final int fc_menu_layout=0x7f030000;
-        public static final int item_menu=0x7f030001;
+        public static final int file_explorer=0x7f030001;
+        public static final int file_row=0x7f030002;
+        public static final int item_menu=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
